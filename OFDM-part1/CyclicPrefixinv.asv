@@ -1,0 +1,7 @@
+function [cp_inv] = CyclicPrefixinv(matrix,mu)
+    %UNTITLED Summary of this function goes here
+    %   Detailed explanation goes here
+    dim = size(matrix);
+    cp_inv =[matrix(mu+1:dim(1),:)];
+end
+

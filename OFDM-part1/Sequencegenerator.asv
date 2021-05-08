@@ -1,0 +1,40 @@
+function [seq_line] = Sequencegenerator(N,oversamp,M)
+    %This function return a seuqence line with length N and modulated with
+    %M-QAM
+    
+    %%%%%%%  Parameters %%%%%%%
+    %N : Number of symbols in the experiment
+    % oversamp : oversampling factor
+    % M: M-QAM
+        
+    % This is the exact implementation for the following formula θi =2π(i−1)/M
+    l= sqrt(M);
+    qam_matrix = [];
+    for a = [-l+1:2:l-1]
+        qam_matrix = [qam_matrix , a+[-l+1:2:l-1]*j];
+    end
+    
+    %  a random generation for a seuence line with the length of Number of symbols N and choose randomly for a set of thetas generated previously
+    seq_line = randsrc(1,N,qam_matrix); 
+    s_i = seq_line *sqrt(1/2);
+    s_i = upsample(s_i,oversamp);
+    
+    r_symbols_I = real(seq_line);
+    r_symbols_Q = imag(seq_line);
+    hold on;
+    grid on;
+    s = scatter(r_symbols_I(:),r_symbols_Q(:),'b','filled','MarkerFaceAlpha',0.5);
+    scatter(sqrt(1/2)*real(qam_matrix), sqrt(1/2)*imag(qam_matrix),150*ones(1,16) , '+','MarkerEdgeColor','r','LineWidth',1);
+    legend('Received symbols','Constellation Symbols')
+    xlabel('\phi_1')
+    ylabel('\phi_2')
+    set(gca,'XAxisLocation','origin');
+    set(gca,'YAxisLocation','origin');
+    axis equal;
+    xlim([-4 4])
+    ylim([-4 4])
+
+    
+    
+end
+
